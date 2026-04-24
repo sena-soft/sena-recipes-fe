@@ -1,12 +1,35 @@
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "/logo.png";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useAppStore } from "../stores/useAppStore";
+import SearchForm from "./SearchForm";
 function Header() {
   const { pathname } = useLocation();
-
   const isHome = useMemo(() => pathname === "/", [pathname]);
 
+  const [searchFilters, setSearchFilters] = useState({
+    query: "",
+    category: "",
+  });
   const headerClasses = `relative bg-slate-800 ${isHome ? "bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat" : ""}`;
+  const fetchCategories = useAppStore((state) => state.fetchCategories);
+  const searchRecipes = useAppStore((state) => state.searchRecipes);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => 
+    setSearchFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (Object.values(searchFilters).includes("")) {
+      console.error("Please fill in all fields");
+      return;
+    }
+    searchRecipes(searchFilters);
+  }
 
   return (
     <header className={headerClasses}>
@@ -35,45 +58,7 @@ function Header() {
           </nav>
         </div>
         {isHome && (
-          <form className="mt-20 md:w-1/2 2xl:w-1/3 p-10 rounded-lg shadow space-y-6 bg-zinc-500">
-            <div className="space-y-4">
-              <label
-                htmlFor="search"
-                className="block text-white uppercase font-extrabold text-lg"
-              >
-                Search for recipes
-              </label>
-              <input
-                id="search"
-                className="w-full bg-amber-50 rounded-lg p-3 focus:outline-none"
-                type="text"
-                placeholder="Search for recipes..."
-              />
-            </div>
-            <div className="space-y-4">
-              <label
-                htmlFor="search"
-                className="block text-white uppercase font-extrabold text-lg"
-              >
-                Category
-              </label>
-              <select
-                id="category"
-                className="w-full bg-amber-50 rounded-lg p-3 focus:outline-none"
-              >
-                <option value="">Select a category...</option>
-                <option value="breakfast">Breakfast</option>
-                <option value="lunch">Lunch</option>
-                <option value="dinner">Dinner</option>
-              </select>
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-amber-500 text-white rounded-lg p-3 font-bold hover:bg-amber-600 transition-colors"
-            >
-              Search
-            </button>
-          </form>
+          <SearchForm searchFilters={searchFilters} onChange={handleChange} onSubmit={handleSubmit} />
         )}
       </div>
     </header>
