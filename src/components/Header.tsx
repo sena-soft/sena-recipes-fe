@@ -14,6 +14,8 @@ function Header() {
   const headerClasses = `relative bg-slate-800 ${isHome ? "bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat" : ""}`;
   const fetchCategories = useAppStore((state) => state.fetchCategories);
   const searchRecipes = useAppStore((state) => state.searchRecipes);
+  const meals = useAppStore((state) => state.meals);
+  console.log(meals);
 
   useEffect(() => {
     fetchCategories();

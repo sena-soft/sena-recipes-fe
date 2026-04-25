@@ -15,3 +15,13 @@ export const SearchFilresSchema = z.object({
     query: z.string(),
     category: z.string(),
 })
+
+export const MealAPIResponse = z.object({
+    idMeal: z.string(),
+    strMeal: z.string(),
+    strMealThumb: z.string(),
+});
+
+export const MealsAPIResponseSchema = z.object({
+    meals: z.array(MealAPIResponse)
+});
