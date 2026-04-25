@@ -47,7 +47,7 @@ function SearchForm({ searchFilters, onChange, onSubmit }: SearchFormProps) {
               >
                 <option value="">Select a category...</option>
                 {categories.map((category) => (
-                  <option key={category.idCategory} value={category.idCategory}>
+                  <option key={category.idCategory} value={category.strCategory}>
                     {category.strCategory}
                   </option>
                 ))}
