@@ -55,7 +55,7 @@ function SearchForm({ searchFilters, onChange, onSubmit }: SearchFormProps) {
             </div>
             <button
               type="submit"
-              className="w-full bg-amber-500 text-white rounded-lg p-3 font-bold hover:bg-amber-600 transition-colors"
+              className="w-full cursor-pointer bg-amber-500 text-white rounded-lg p-3 font-bold hover:bg-amber-600 transition-colors"
             >
               Search
             </button>
